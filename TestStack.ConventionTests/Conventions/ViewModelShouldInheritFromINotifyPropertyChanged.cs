@@ -1,6 +1,8 @@
 ﻿namespace TestStack.ConventionTests.Conventions
 {
     using System;
+    using System.ComponentModel;
+    using System.Linq;
     using System.Reflection;
     using TestStack.ConventionTests.ConventionData;
 

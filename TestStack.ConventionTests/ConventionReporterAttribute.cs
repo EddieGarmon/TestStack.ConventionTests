@@ -1,9 +1,7 @@
 ﻿namespace TestStack.ConventionTests
 {
     using System;
-    #if NewReflection
     using System.Reflection;
-    #endif
     using TestStack.ConventionTests.Reporting;
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]

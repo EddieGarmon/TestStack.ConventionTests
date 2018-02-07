@@ -11,31 +11,28 @@
 
     public static class TypeExtensions
     {
-        public static bool IsConcreteClass(this Type t) =>
-        #if NewReflection
-             t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract;
-        #else
-             t.IsClass && !t.IsAbstract;
-        #endif
 
-        public static bool IsEnum(this Type type)
-        {
-            return typeof(Enum).IsAssignableFrom(type);
-        }
+        public static Assembly GetAssembly(this Type type) => type.GetTypeInfo().Assembly;
+
+        public static Type GetBaseType(this Type type) => type.GetTypeInfo().BaseType;
+
+#if GetTypeInfoPolyfill
+        public static Type GetTypeInfo(this Type type) => type;
+#endif
+
+        public static bool IsCompilerGenerated(this Type type) => type.IsDefined(typeof(CompilerGeneratedAttribute), false);
+
+        public static bool IsConcreteClass(this Type t) => t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract;
+
+        public static bool IsDefined(this Type type, Type attributeType, bool inherit) =>
+            type.GetTypeInfo().IsDefined(attributeType, inherit);
+
+        public static bool IsEnum(this Type type) => typeof(Enum).IsAssignableFrom(type);
+
+        public static bool IsGenericType(this Type type) => type.GetTypeInfo().IsGenericType;
 
         public static bool IsStatic(this Type type) =>
-        #if NewReflection
             type.GetTypeInfo().IsClass && type.GetTypeInfo().IsSealed && type.GetTypeInfo().IsAbstract;
-        #else
-            type.IsClass && type.IsSealed && type.IsAbstract;
-        #endif
-
-        public static bool IsCompilerGenerated(this Type type) =>
-        #if  NewReflection
-            type.IsDefined(typeof(CompilerGeneratedAttribute), false);
-        #else
-            type.IsDefined(typeof(CompilerGeneratedAttribute), true);
-        #endif
 
         public static bool HasDefaultConstructor(this Type type)
         {
@@ -50,10 +47,7 @@
                 .Any(constructorInfo => constructorInfo.GetParameters().Length == 0);
         }
 
-        public static bool AssignableTo<TAssignableTo>(this Type type)
-        {
-            return typeof(TAssignableTo).IsAssignableFrom(type);
-        }
+        public static bool AssignableTo<TAssignableTo>(this Type type) => typeof(TAssignableTo).IsAssignableFrom(type);
 
         public static IEnumerable<MethodInfo> NonVirtualMethods(this Type type)
         {
@@ -70,19 +64,11 @@
 
         public static IEnumerable<Type> GetClosedInterfacesOf(this Type type, Type openGeneric)
         {
-            #if NewReflection
             return from i in type.GetInterfaces()
                 where i.GetTypeInfo().IsGenericType
                 let defn = i.GetGenericTypeDefinition()
                 where defn == openGeneric
                 select i;
-            #else
-                return from i in type.GetInterfaces()
-                where i.IsGenericType
-                let defn = i.GetGenericTypeDefinition()
-                where defn == openGeneric
-                select i;
-            #endif
         }
 
         public static bool ClosesInterface(this Type t, Type openGeneric)
@@ -108,9 +94,6 @@
 
             
             if (!type.GetTypeInfo().IsGenericType)
-            {
-                
-            }
                 switch (type.Name)
                 {
                     case "String":
@@ -144,5 +127,6 @@
             sb.Append('>');
             return sb.ToString();
         }
+
     }
 }

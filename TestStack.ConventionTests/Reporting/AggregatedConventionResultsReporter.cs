@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using TestStack.ConventionTests.ConventionData;
     using TestStack.ConventionTests.Internal;
 
     /// <summary>
@@ -20,18 +21,13 @@
             output = Path.Combine(AssemblyDirectory, outputFilename);
         }
 
-        static string AssemblyDirectory
+        private static string AssemblyDirectory
         {
             get
             {
                 // http://stackoverflow.com/questions/52797/c-how-do-i-get-the-path-of-the-assembly-the-code-is-in#answer-283917
 
-                #if NewReflection
-                var codeBase = Assembly.GetEntryAssembly().CodeBase;
-                #else
-                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                #endif
-
+                var codeBase = typeof(AggregatedConventionResultsReporter).GetAssembly().CodeBase;
                 var uri = new UriBuilder(codeBase);
                 var path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);

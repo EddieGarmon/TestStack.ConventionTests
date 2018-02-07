@@ -3,9 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using TestStack.ConventionTests.ConventionData;
-    using TestStack.ConventionTests.Internal;
 
     public class MvcControllerNameAndBaseClassConvention : IConvention<Types>
     {

@@ -159,11 +159,7 @@
         [Obsolete("This method is obsolete and should not be used. Use the overload with a predicate instead.")]
         public static Types InAssemblyOf<T>(string descriptionOfTypes, Func<IEnumerable<Type>, IEnumerable<Type>> types)
         {
-            #if NewReflection
             var typeInfoTypes = typeof(T).GetTypeInfo().Assembly.GetTypes();
-            #else
-            var typeInfoTypes = typeof(T).Assembly.GetTypes();
-            #endif
             return InCollection(types(typeInfoTypes), descriptionOfTypes);
         }
 

@@ -87,12 +87,7 @@
 
         static IEnumerable<Attribute> GetCustomReporters<TDataSource>()
         {
-            #if NewReflection
-            return typeof(TDataSource).GetTypeInfo().GetCustomAttributes(typeof(ConventionReporterAttribute), false);
-            #else
-            var assembly = Assembly.GetCallingAssembly();
-            return (IEnumerable<Attribute>)assembly.GetCustomAttributes(typeof(ConventionReporterAttribute), false);
-            #endif
+            return (IEnumerable<Attribute>)typeof(TDataSource).GetTypeInfo().GetCustomAttributes(typeof(ConventionReporterAttribute), false);
         }
     }
 }
