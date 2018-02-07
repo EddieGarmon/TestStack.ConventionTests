@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFrameworks>net45;netstandard1.6</TargetFrameworks>
     <AssemblyName>TestStack.ConventionTests.Autofac</AssemblyName>
     <PackageId>TestStack.ConventionTests.Autofac</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -21,6 +21,6 @@
     <ProjectReference Include="..\TestStack.ConventionTests\TestStack.ConventionTests.csproj" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
-    <DefineConstants>$(DefineConstants);NewReflection;</DefineConstants>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
   </PropertyGroup>
 </Project>
